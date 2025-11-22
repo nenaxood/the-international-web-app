@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление заказами - Админ панель</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="admin.html" class="text-2xl font-black text-purple-400">TI Admin</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="admin.html" class="text-gray-300 hover:text-white transition">Панель</a>
+                        <a href="admin-users.html" class="text-gray-300 hover:text-white transition">Пользователи</a>
+                        <a href="admin-orders.html" class="text-white hover:text-purple-400 transition">Заказы</a>
+                    </div>
+                </div>
+                <button id="logout-btn" class="px-6 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition font-semibold">
+                    Выход
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-black mb-8">Управление заказами</h1>
+
+        <!-- Фильтры -->
+        <div class="bg-gray-800 p-4 rounded-lg mb-6 border border-gray-700">
+            <div class="flex gap-4 flex-wrap">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Поиск по ID заказа..."
+                    class="px-4 py-2 bg-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                <select id="status-filter" class="px-4 py-2 bg-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="">Все статусы</option>
+                    <option value="pending">⏳ В ожидании</option>
+                    <option value="completed">✓ Выполнен</option>
+                    <option value="cancelled">✗ Отменен</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Список заказов -->
+        <div id="orders-container" class="space-y-4">
+            <div class="text-gray-400 text-center py-8">Загрузка заказов...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        console.log('Загрузка страницы управления заказами...');
+        
+        try {
+            console.log('[Orders] Импортирование admin.js...');
+            const adminModule = await import('./admin.js');
+            console.log('[Orders] admin.js загружен, проверяем функции:', Object.keys(adminModule));
+            const { isAdmin, onOrdersChange, updateOrderStatus, deleteOrder } = adminModule;
+            console.log('[Orders] ✅ Функции загружены:', { isAdmin: typeof isAdmin, onOrdersChange: typeof onOrdersChange, updateOrderStatus: typeof updateOrderStatus, deleteOrder: typeof deleteOrder });
+            const { onAuthChange, logoutUser } = await import('./auth.js');
+
+            let allOrders = [];
+
+            // Проверка прав админа
+            onAuthChange(async (user) => {
+                console.log('[Orders] Пользователь:', user?.email);
+                
+                if (!user) {
+                    console.log('[Orders] Не авторизован, перенаправляем на логин');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                console.log('[Orders] Проверка прав админа...');
+                const admin = await isAdmin(user.uid);
+                console.log('[Orders] Является ли админом:', admin);
+                
+                if (!admin) {
+                    console.log('[Orders] Не админ, перенаправляем на профиль');
+                    window.location.href = 'profile.html';
+                    return;
+                }
+
+                console.log('[Orders] ✅ Админ подтвержден, загружаем заказы');
+                // Загрузить заказы в реальном времени
+                onOrdersChange((orders) => {
+                    console.log('[Orders] Заказы обновлены, количество:', orders.length);
+                    allOrders = orders;
+                    renderOrders(orders);
+                });
+            });
+
+            // Отобразить заказы
+            function renderOrders(orders) {
+                const container = document.getElementById('orders-container');
+                
+                if (orders.length === 0) {
+                    container.innerHTML = '<div class="text-gray-400 text-center py-8">Нет заказов</div>';
+                    return;
+                }
+
+                container.innerHTML = orders.map(order => `
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                            <div>
+                                <div class="text-gray-400 text-sm">ID заказа</div>
+                                <div class="font-mono font-bold text-sm">${order.orderId || '-'}</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-400 text-sm">От пользователя</div>
+                                <div class="font-mono text-sm">${order.userId?.substring(0, 12) || '-'}...</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-400 text-sm">Дата</div>
+                                <div class="text-sm">${new Date(order.createdAt).toLocaleString('ru-RU')}</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-400 text-sm">Сумма</div>
+                                <div class="text-lg font-bold">$${order.total?.toFixed(2) || '0.00'}</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-400 text-sm">Товаров</div>
+                                <div>${order.items?.length || 0} шт.</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-700 p-3 rounded mb-4 text-sm max-h-24 overflow-y-auto">
+                            <div class="text-gray-400 mb-2">📦 Товары:</div>
+                            <div class="space-y-1 text-gray-300">
+                                ${(order.items || []).map(item => `
+                                    <div>• ${item.name} x${item.quantity} = $${(item.price * item.quantity).toFixed(2)}</div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-700 pt-4 mt-4">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                                <div>
+                                    <div class="text-gray-400 text-sm mb-2">Статус</div>
+                                    <select 
+                                        class="status-select w-full px-3 py-2 bg-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        data-order-id="${order.orderId}"
+                                        data-user-id="${order.userId}"
+                                        value="${order.status || 'pending'}"
+                                    >
+                                        <option value="pending">⏳ В ожидании</option>
+                                        <option value="completed">✓ Выполнен</option>
+                                        <option value="cancelled">✗ Отменен</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button 
+                                        class="update-status-btn w-full bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded transition font-semibold text-sm"
+                                        data-order-id="${order.orderId}"
+                                        data-user-id="${order.userId}"
+                                    >
+                                        💾 Сохранить
+                                    </button>
+                                </div>
+                                <div>
+                                    <button 
+                                        class="delete-order-btn w-full bg-red-600 hover:bg-red-700 px-3 py-2 rounded transition font-semibold text-sm"
+                                        data-order-id="${order.orderId}"
+                                        data-user-id="${order.userId}"
+                                    >
+                                        🗑️ Удалить
+                                    </button>
+                                </div>
+                                <div>
+                                    <div class="text-gray-400 text-sm mb-2">Статус</div>
+                                    <div class="px-3 py-2 bg-gray-700 rounded text-sm">
+                                        ${order.status === 'completed' ? '✓ Выполнен' : order.status === 'pending' ? '⏳ В ожидании' : '✗ Отменен'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Добавить обработчики для сохранения статуса
+                document.querySelectorAll('.update-status-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const orderId = e.target.getAttribute('data-order-id');
+                        const userId = e.target.getAttribute('data-user-id');
+                        const selectElement = e.target.closest('.bg-gray-800').querySelector('.status-select');
+                        const newStatus = selectElement.value;
+
+                        console.log('[Orders] Сохранение статуса:', orderId, '→', newStatus);
+                        
+                        e.target.disabled = true;
+                        e.target.textContent = 'Сохранение...';
+
+                        const result = await updateOrderStatus(userId, orderId, newStatus);
+                        
+                        if (result.success) {
+                            console.log('[Orders] ✅ Статус обновлен');
+                            e.target.textContent = '✓ Сохранено';
+                            setTimeout(() => {
+                                e.target.textContent = '💾 Сохранить';
+                                e.target.disabled = false;
+                            }, 2000);
+                        } else {
+                            console.error('[Orders] ❌ Ошибка:', result.error);
+                            alert('❌ Ошибка: ' + result.error);
+                            e.target.textContent = '💾 Сохранить';
+                            e.target.disabled = false;
+                        }
+                    });
+                });
+
+                // Добавить обработчики для удаления
+                document.querySelectorAll('.delete-order-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const orderId = e.target.getAttribute('data-order-id');
+                        const userId = e.target.getAttribute('data-user-id');
+
+                        if (!confirm('Вы уверены? Заказ будет удален навсегда!')) {
+                            return;
+                        }
+
+                        console.log('[Orders] Удаление заказа:', orderId);
+                        
+                        e.target.disabled = true;
+                        e.target.textContent = 'Удаляю...';
+
+                        const result = await deleteOrder(userId, orderId);
+                        
+                        if (result.success) {
+                            console.log('[Orders] ✅ Заказ удален');
+                            e.target.closest('.bg-gray-800').remove();
+                        } else {
+                            console.error('[Orders] ❌ Ошибка удаления:', result.error);
+                            alert('❌ Ошибка: ' + result.error);
+                            e.target.textContent = '🗑️ Удалить';
+                            e.target.disabled = false;
+                        }
+                    });
+                });
+            }
+
+            // Фильтрация
+            document.getElementById('search-input').addEventListener('input', filterOrders);
+            document.getElementById('status-filter').addEventListener('change', filterOrders);
+
+            function filterOrders() {
+                const searchText = document.getElementById('search-input').value.toLowerCase();
+                const statusFilter = document.getElementById('status-filter').value;
+
+                const filtered = allOrders.filter(order => {
+                    const matchesSearch = (order.orderId?.includes(searchText) || order.userId?.includes(searchText));
+                    const matchesStatus = !statusFilter || order.status === statusFilter;
+                    return matchesSearch && matchesStatus;
+                });
+
+                renderOrders(filtered);
+            }
+
+            // Выход
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                const result = await logoutUser();
+                if (result.success) {
+                    console.log('[Orders] Успешный выход');
+                    window.location.href = 'login.html';
+                }
+            });
+
+            console.log('✅ Страница управления заказами готова');
+        } catch (error) {
+            console.error('Критическая ошибка загрузки:', error);
+            alert('Ошибка: ' + error.message);
+        }
+    </script>
+</body>
+</html>

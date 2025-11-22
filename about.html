@@ -1,0 +1,143 @@
+<!-- ===================================== -->
+<!-- ABOUT.HTML - Страница О турнире -->
+<!-- ===================================== -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О турнире - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-purple-400 font-semibold hover:text-purple-300 transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-purple-900 to-indigo-900 py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-black mb-4">О турнире The International</h1>
+            <p class="text-xl text-gray-200">Узнайте всё о крупнейшем киберспортивном событии года</p>
+        </div>
+    </div>
+
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                <div class="bg-gray-800 p-8 rounded-xl">
+                    <h2 class="text-3xl font-bold mb-6 text-purple-400">📖 История возникновения</h2>
+                    <p class="text-gray-300 mb-4">
+                        The International - это ежегодный чемпионат мира по Dota 2, организованный компанией Valve. 
+                        Первый турнир состоялся в 2011 году на выставке Gamescom в Кёльне, Германия.
+                    </p>
+                    <p class="text-gray-300 mb-4">
+                        С тех пор турнир вырос и стал крупнейшим киберспортивным событием с призовым фондом, 
+                        превышающим 40 миллионов долларов, собранным благодаря вкладу игрового сообщества.
+                    </p>
+                    <a href="history.html" class="inline-block mt-4 px-6 py-3 bg-red-600 rounded-lg hover:bg-red-700 transition">
+                        Подробная история →
+                    </a>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-xl">
+                    <h2 class="text-3xl font-bold mb-6 text-purple-400">👥 Работники</h2>
+                    <p class="text-gray-300 mb-4">
+                        Турнир организует команда профессионалов из Valve Corporation совместно 
+                        с лучшими продюсерами, режиссерами и техническими специалистами индустрии.
+                    </p>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-3">✓</span>
+                            Организаторы и продюсеры
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-3">✓</span>
+                            Комментаторы и аналитики
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-3">✓</span>
+                            Технический персонал
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-3">✓</span>
+                            Команда безопасности
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">🏆 Работники</h3>
+                    <p class="text-gray-100 mb-4">Узнайте о команде, которая делает турнир возможным</p>
+                    <a href="staff.html" class="text-white underline hover:text-blue-200">Подробнее →</a>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-600 to-green-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">📋 Будущие планы</h3>
+                    <p class="text-gray-100 mb-4">Что ждет The International в будущем</p>
+                    <a href="future.html" class="text-white underline hover:text-green-200">Узнать больше →</a>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">⭐ Любимые персонажи</h3>
+                    <p class="text-gray-100 mb-4">Статистика популярных героев турнира</p>
+                    <a href="favorites.html" class="text-white underline hover:text-purple-200">Смотреть →</a>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 p-10 rounded-xl">
+                <h2 class="text-3xl font-bold mb-6 text-center text-purple-400">Почему The International особенный?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">💰</div>
+                        <h4 class="font-bold text-xl mb-2">Огромный призовой фонд</h4>
+                        <p class="text-gray-400">Более $40 млн</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🌍</div>
+                        <h4 class="font-bold text-xl mb-2">Мировой масштаб</h4>
+                        <p class="text-gray-400">Команды со всего мира</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">📺</div>
+                        <h4 class="font-bold text-xl mb-2">Миллионы зрителей</h4>
+                        <p class="text-gray-400">Онлайн и оффлайн</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🎮</div>
+                        <h4 class="font-bold text-xl mb-2">Лучшие игроки</h4>
+                        <p class="text-gray-400">Топ команды планеты</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

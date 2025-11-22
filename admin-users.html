@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление пользователями - Админ панель</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="admin.html" class="text-2xl font-black text-purple-400">TI Admin</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="admin.html" class="text-gray-300 hover:text-white transition">Панель</a>
+                        <a href="admin-users.html" class="text-white hover:text-purple-400 transition">Пользователи</a>
+                        <a href="admin-orders.html" class="text-gray-300 hover:text-white transition">Заказы</a>
+                    </div>
+                </div>
+                <button id="logout-btn" class="px-6 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition font-semibold">
+                    Выход
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-black mb-8">Управление пользователями</h1>
+
+        <!-- Поиск -->
+        <div class="bg-gray-800 p-4 rounded-lg mb-6 border border-gray-700">
+            <input 
+                type="text" 
+                id="search-input"
+                placeholder="Поиск по имени или email..."
+                class="w-full px-4 py-2 bg-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+        </div>
+
+        <!-- Список пользователей -->
+        <div id="users-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="text-gray-400 text-center py-8 col-span-full">Загрузка пользователей...</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для изменения пароля -->
+    <div id="password-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-4">🔐 Изменить пароль пользователя</h2>
+            
+            <div id="modal-user-info" class="bg-gray-700 p-3 rounded mb-4 text-sm">
+                <div id="modal-user-name">Загрузка...</div>
+                <div id="modal-user-email" class="text-gray-400">-</div>
+            </div>
+
+            <div id="modal-error" class="hidden bg-red-900 border border-red-700 text-red-200 p-3 rounded mb-4 text-sm"></div>
+
+            <form id="modal-password-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-400 mb-2">Новый пароль</label>
+                    <input 
+                        type="password" 
+                        id="modal-new-password"
+                        class="w-full px-4 py-2 bg-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Минимум 6 символов"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 mb-2">Подтвердите пароль</label>
+                    <input 
+                        type="password" 
+                        id="modal-confirm-password"
+                        class="w-full px-4 py-2 bg-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Повторите пароль"
+                        required
+                    >
+                </div>
+
+                <p class="text-gray-400 text-sm">⚠️ Введите новый пароль для этого пользователя</p>
+
+                <div class="flex gap-2">
+                    <button 
+                        type="submit"
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition font-semibold"
+                    >
+                        ✅ Установить пароль
+                    </button>
+                    <button 
+                        type="button"
+                        id="modal-cancel-btn"
+                        class="flex-1 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded transition font-semibold"
+                    >
+                        ❌ Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        console.log('Загрузка админ-панели пользователей...');
+        
+        try {
+            console.log('[Users] Импортирование admin.js...');
+            const adminModule = await import('./admin.js');
+            console.log('[Users] admin.js загружен, проверяем функции:', Object.keys(adminModule));
+            const { isAdmin, getAllUsers, deleteUser } = adminModule;
+            console.log('[Users] ✅ Функции загружены:', { isAdmin: typeof isAdmin, getAllUsers: typeof getAllUsers, deleteUser: typeof deleteUser });
+            const { onAuthChange, logoutUser } = await import('./auth.js');
+
+            let allUsers = {};
+
+            // Проверка прав админа
+            onAuthChange(async (user) => {
+                console.log('[Users] Пользователь:', user?.email);
+                
+                if (!user) {
+                    console.log('[Users] Не авторизован, перенаправляем на логин');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                console.log('[Users] Проверка прав админа...');
+                const admin = await isAdmin(user.uid);
+                console.log('[Users] Является ли админом:', admin);
+                
+                if (!admin) {
+                    console.log('[Users] Не админ, перенаправляем на профиль');
+                    window.location.href = 'profile.html';
+                    return;
+                }
+
+                console.log('[Users] ✅ Админ подтвержден, загружаем пользователей');
+                // Загрузить пользователей
+                const result = await getAllUsers();
+                console.log('[Users] Результат getAllUsers:', result);
+                
+                if (result.success) {
+                    allUsers = result.data || {};
+                    console.log('[Users] Пользователи загружены:', Object.keys(allUsers).length);
+                    renderUsers(allUsers);
+                } else {
+                    console.error('[Users] Ошибка при получении пользователей:', result.error);
+                    document.getElementById('users-container').innerHTML = 
+                        '<div class="text-red-400 text-center py-8 col-span-full">❌ Ошибка: ' + result.error + '</div>';
+                }
+            });
+
+            // Отобразить пользователей
+            function renderUsers(users) {
+                const container = document.getElementById('users-container');
+                const usersList = Object.entries(users);
+                
+                console.log('[Users] Отображение пользователей:', usersList.length);
+
+                if (usersList.length === 0) {
+                    container.innerHTML = '<div class="text-gray-400 text-center py-8 col-span-full">Нет пользователей</div>';
+                    return;
+                }
+
+                container.innerHTML = usersList.map(([userId, user]) => `
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 ${user.role === 'admin' ? 'bg-yellow-600' : 'bg-purple-600'} rounded-full flex items-center justify-center text-lg mr-3">
+                                ${user.role === 'admin' ? '👑' : '👤'}
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-bold text-sm">${user.displayName || 'Пользователь'}</div>
+                                <div class="text-gray-400 text-xs">${user.email || '-'}</div>
+                            </div>
+                        </div>
+                        <div class="text-gray-400 text-xs space-y-1 mb-3 bg-gray-700 p-2 rounded">
+                            <div>
+                                <span class="text-gray-400">🔑 UID:</span>
+                                <span class="font-mono ml-1">${userId}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">📅 Регистрация:</span>
+                                <span class="ml-1">${user.createdAt ? new Date(user.createdAt).toLocaleString('ru-RU') : '-'}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">🎭 Статус:</span>
+                                <span class="text-${user.role === 'admin' ? 'yellow' : 'purple'}-400 font-semibold ml-1">
+                                    ${user.role === 'admin' ? '👑 Админ' : '👤 Пользователь'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            ${user.role !== 'admin' ? `
+                                <button 
+                                    class="change-password-btn w-full bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm transition"
+                                    data-user-id="${userId}"
+                                    data-user-email="${user.email}"
+                                    data-user-name="${user.displayName || 'Пользователь'}"
+                                >
+                                    🔐 Изменить пароль
+                                </button>
+                                <button 
+                                    class="delete-user-btn w-full bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm transition"
+                                    data-user-id="${userId}"
+                                    data-user-email="${user.email}"
+                                >
+                                    🗑️ Удалить пользователя
+                                </button>
+                            ` : `
+                                <div class="w-full bg-yellow-900 px-3 py-1 rounded text-sm text-center text-yellow-300">
+                                    ⚠️ Админ (не может быть удален)
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `).join('');
+
+                // Добавить обработчики для удаления
+                document.querySelectorAll('.delete-user-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const userId = e.target.getAttribute('data-user-id');
+                        const userEmail = e.target.getAttribute('data-user-email');
+
+                        if (!confirm(`Удалить пользователя ${userEmail}?\nЭта операция необратима!`)) {
+                            return;
+                        }
+
+                        console.log('[Users] Удаление пользователя:', userId);
+                        
+                        e.target.disabled = true;
+                        e.target.textContent = 'Удаляю...';
+
+                        const result = await deleteUser(userId);
+                        
+                        if (result.success) {
+                            console.log('[Users] ✅ Пользователь удален');
+                            e.target.closest('.bg-gray-800').remove();
+                            alert('✅ Пользователь удален');
+                        } else {
+                            console.error('[Users] ❌ Ошибка удаления:', result.error);
+                            alert('❌ Ошибка: ' + result.error);
+                            e.target.textContent = '🗑️ Удалить пользователя';
+                            e.target.disabled = false;
+                        }
+                    });
+                });
+            }
+
+            // Поиск
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const searchText = e.target.value.toLowerCase();
+                const filtered = Object.fromEntries(
+                    Object.entries(allUsers).filter(([userId, user]) => {
+                        return (user.displayName?.toLowerCase().includes(searchText) || 
+                                user.email?.toLowerCase().includes(searchText) ||
+                                userId.toLowerCase().includes(searchText));
+                    })
+                );
+                renderUsers(filtered);
+            });
+
+            // Выход
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                const result = await logoutUser();
+                if (result.success) {
+                    console.log('[Users] Успешный выход');
+                    window.location.href = 'login.html';
+                }
+            });
+
+            // Обработчик изменения пароля
+            let currentModalUserId = null;
+            
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('change-password-btn')) {
+                    currentModalUserId = e.target.getAttribute('data-user-id');
+                    const userName = e.target.getAttribute('data-user-name');
+                    const userEmail = e.target.getAttribute('data-user-email');
+                    
+                    document.getElementById('modal-user-name').textContent = userName;
+                    document.getElementById('modal-user-email').textContent = userEmail;
+                    document.getElementById('modal-error').classList.add('hidden');
+                    document.getElementById('modal-password-form').reset();
+                    document.getElementById('password-modal').classList.remove('hidden');
+                }
+            });
+
+            // Закрыть модальное окно
+            document.getElementById('modal-cancel-btn').addEventListener('click', () => {
+                document.getElementById('password-modal').classList.add('hidden');
+                currentModalUserId = null;
+            });
+
+            // Обработчик формы изменения пароля
+            document.getElementById('modal-password-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const newPassword = document.getElementById('modal-new-password').value;
+                const confirmPassword = document.getElementById('modal-confirm-password').value;
+                const errorDiv = document.getElementById('modal-error');
+
+                if (newPassword !== confirmPassword) {
+                    errorDiv.textContent = '❌ Пароли не совпадают';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+
+                if (newPassword.length < 6) {
+                    errorDiv.textContent = '❌ Пароль должен быть минимум 6 символов';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+
+                try {
+                    console.log('[ChangePassword] Попытка изменить пароль для:', currentModalUserId);
+                    
+                    const { updateUserPassword } = await import('./admin.js');
+                    const result = await updateUserPassword(currentModalUserId, newPassword);
+                    
+                    if (!result.success) {
+                        errorDiv.innerHTML = `
+                            <div class="font-semibold mb-2">⚠️ Firebase ограничение:</div>
+                            <p class="text-xs mb-2">Менять пароль другого пользователя можно только через Admin SDK на сервере.</p>
+                            <div class="text-xs bg-gray-900 p-2 rounded mt-2 mb-2">
+                                <strong>Временное решение:</strong><br>
+                                1. Firebase Console → Authentication<br>
+                                2. Найди пользователя<br>
+                                3. Нажми "..." → "Удалить пароль"<br>
+                                4. Пользователь установит новый при входе
+                            </div>
+                        `;
+                        errorDiv.classList.remove('hidden');
+                        return;
+                    }
+
+                    alert('✅ Пароль установлен');
+                    document.getElementById('password-modal').classList.add('hidden');
+                    currentModalUserId = null;
+                } catch (error) {
+                    console.error('[ChangePassword] Ошибка:', error);
+                    errorDiv.textContent = '❌ Ошибка: ' + error.message;
+                    errorDiv.classList.remove('hidden');
+                }
+            });
+
+            console.log('✅ Страница управления пользователями готова');
+        } catch (error) {
+            console.error('Критическая ошибка загрузки:', error);
+            alert('Ошибка: ' + error.message);
+        }
+    </script>
+</body>
+</html>

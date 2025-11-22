@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трансляции - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-blue-900 to-indigo-900 py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-black mb-4">📺 Трансляции</h1>
+            <p class="text-xl text-gray-200">Смотрите The International в прямом эфире</p>
+        </div>
+    </div>
+
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <!-- Активные трансляции -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-6 text-purple-400">🔴 Прямой эфир</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 rounded-xl overflow-hidden">
+                        <div class="relative">
+                            <div class="bg-gray-700 h-48 flex items-center justify-center">
+                                <span class="text-6xl">🎮</span>
+                            </div>
+                            <span class="absolute top-2 left-2 bg-red-600 px-3 py-1 rounded-full text-sm font-bold">
+                                LIVE
+                            </span>
+                            <span class="absolute bottom-2 right-2 bg-black bg-opacity-75 px-2 py-1 rounded text-sm">
+                                128K зрителей
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-xl mb-2">Team Spirit vs PSG.LGD</h3>
+                            <p class="text-gray-400 mb-4">Верхняя сетка, Раунд 2</p>
+                            <button class="w-full bg-red-600 py-2 rounded hover:bg-red-700 transition">
+                                Смотреть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Каналы трансляции -->
+            <div class="bg-gray-800 p-8 rounded-xl mb-12">
+                <h2 class="text-2xl font-bold mb-6">Официальные каналы трансляции</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="#" class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition">
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">📺</span>
+                            <div>
+                                <h3 class="font-bold">Twitch</h3>
+                                <p class="text-gray-400">Основной канал</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition">
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">🎥</span>
+                            <div>
+                                <h3 class="font-bold">YouTube</h3>
+                                <p class="text-gray-400">Официальный канал</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition">
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">📱</span>
+                            <div>
+                                <h3 class="font-bold">Мобильное приложение</h3>
+                                <p class="text-gray-400">iOS/Android</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition">
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">🌐</span>
+                            <div>
+                                <h3 class="font-bold">Steam.tv</h3>
+                                <p class="text-gray-400">Стриминг в Steam</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Расписание трансляций -->
+            <div class="bg-gray-800 p-8 rounded-xl">
+                <h2 class="text-2xl font-bold mb-6">Расписание трансляций</h2>
+                <div class="space-y-4">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-blue-400 font-bold">15:00 МСК</span>
+                                <h3 class="font-bold mt-1">Team Spirit vs OG</h3>
+                                <p class="text-gray-400">Верхняя сетка, Раунд 2</p>
+                            </div>
+                            <button class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 transition">
+                                Напомнить
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-blue-400 font-bold">19:00 МСК</span>
+                                <h3 class="font-bold mt-1">PSG.LGD vs Tundra Esports</h3>
+                                <p class="text-gray-400">Верхняя сетка, Раунд 2</p>
+                            </div>
+                            <button class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 transition">
+                                Напомнить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

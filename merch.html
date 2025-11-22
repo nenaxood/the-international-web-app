@@ -1,0 +1,223 @@
+<!-- ===================================== -->
+<!-- MERCH.HTML - Страница Мерч -->
+<!-- ===================================== -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мерч - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .added-to-cart {
+            animation: flash 0.5s ease-in-out;
+        }
+        @keyframes flash {
+            0%, 100% { background-color: rgb(22, 163, 74); }
+            50% { background-color: rgb(21, 128, 61); }
+        }
+    </style>
+    <script>
+        // Класс для управления корзиной
+        class Cart {
+            constructor() {
+                this.items = this.loadFromStorage();
+            }
+
+            loadFromStorage() {
+                const stored = localStorage.getItem('cart');
+                return stored ? JSON.parse(stored) : [];
+            }
+
+            saveToStorage() {
+                localStorage.setItem('cart', JSON.stringify(this.items));
+            }
+
+            addItem(item) {
+                const existingItem = this.items.find(i => i.id === item.id);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    this.items.push({ ...item, quantity: 1 });
+                }
+                this.saveToStorage();
+                this.updateCartCount();
+            }
+
+            updateCartCount() {
+                const totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
+                const cartCount = document.getElementById('cart-count');
+                if (cartCount) {
+                    cartCount.textContent = totalItems;
+                    cartCount.classList.remove('hidden');
+                }
+            }
+        }
+
+        // Глобальный объект корзины
+        let cart;
+
+        // Функция для добавления товара в корзину
+        function addToCart(button, item) {
+            if (!cart) return;
+            cart.addItem(item);
+            
+            // Визуальный эффект добавления в корзину
+            button.classList.add('added-to-cart');
+            setTimeout(() => button.classList.remove('added-to-cart'), 500);
+
+            // Показать уведомление
+            showNotification('Товар добавлен в корзину');
+        }
+
+        // Функция для показа уведомления
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        // Инициализация после загрузки страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            cart = new Cart();
+            cart.updateCartCount();
+        });
+    </script>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-purple-400 font-semibold hover:text-purple-300 transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-indigo-900 to-purple-900 py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-black mb-4">🛍️ Официальный мерч The International</h1>
+            <p class="text-xl text-gray-200">Эксклюзивная продукция турнира</p>
+        </div>
+    </div>
+
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <a href="merch-order.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition">
+                    <h3 class="text-2xl font-bold mb-3">📦 Предзаказ</h3>
+                    <p class="text-gray-100">Закажите эксклюзивные товары заранее</p>
+                </a>
+                <a href="merch-catalog.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition">
+                    <h3 class="text-2xl font-bold mb-3">🛒 Товары, уже доступные для покупки</h3>
+                    <p class="text-gray-100">Купите прямо сейчас</p>
+                </a>
+                <a href="shopping-cart.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition relative">
+                    <h3 class="text-2xl font-bold mb-3">🛍️ Корзина</h3>
+                    <p class="text-gray-100">Просмотрите свои покупки</p>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold hidden">0</span>
+                </a>
+            </div>
+
+            <h2 class="text-4xl font-bold mb-8 text-center text-purple-400">Популярные товары</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <div class="bg-gray-700 h-48 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-6xl">👕</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Футболка TI 2025</h3>
+                    <p class="text-gray-400 mb-4">Официальная футболка турнира</p>
+                    <p class="text-green-400 font-bold text-xl mb-4">$35</p>
+                    <button onclick="addToCart(this, {
+                        id: 'tshirt',
+                        name: 'Футболка TI 2025',
+                        description: 'Официальная футболка турнира',
+                        price: 35,
+                        emoji: '👕'
+                    })" class="w-full bg-green-600 py-2 rounded hover:bg-green-700 transition">В корзину</button>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <div class="bg-gray-700 h-48 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-6xl">🧢</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Кепка Aegis</h3>
+                    <p class="text-gray-400 mb-4">Стильная кепка с логотипом</p>
+                    <p class="text-green-400 font-bold text-xl mb-4">$25</p>
+                    <button onclick="addToCart(this, {
+                        id: 'cap',
+                        name: 'Кепка Aegis',
+                        description: 'Стильная кепка с логотипом',
+                        price: 25,
+                        emoji: '🧢'
+                    })" class="w-full bg-green-600 py-2 rounded hover:bg-green-700 transition">В корзину</button>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <div class="bg-gray-700 h-48 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-6xl">🎒</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Рюкзак геймера</h3>
+                    <p class="text-gray-400 mb-4">Вместительный рюкзак TI</p>
+                    <p class="text-green-400 font-bold text-xl mb-4">$60</p>
+                    <button onclick="addToCart(this, {
+                        id: 'backpack',
+                        name: 'Рюкзак геймера',
+                        description: 'Вместительный рюкзак TI',
+                        price: 60,
+                        emoji: '🎒'
+                    })" class="w-full bg-green-600 py-2 rounded hover:bg-green-700 transition">В корзину</button>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <div class="bg-gray-700 h-48 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-6xl">🏆</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Фигурка Aegis</h3>
+                    <p class="text-gray-400 mb-4">Коллекционная реплика</p>
+                    <p class="text-green-400 font-bold text-xl mb-4">$150</p>
+                    <button onclick="addToCart(this, {
+                        id: 'aegis',
+                        name: 'Фигурка Aegis',
+                        description: 'Коллекционная реплика',
+                        price: 150,
+                        emoji: '🏆'
+                    })" class="w-full bg-green-600 py-2 rounded hover:bg-green-700 transition">В корзину</button>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 p-8 rounded-xl mt-12">
+                <h3 class="text-2xl font-bold mb-4 text-green-400">📋 Перейти в оформление заказа</h3>
+                <p class="text-gray-300 mb-6">После добавления товаров в корзину, вы можете оформить заказ и выбрать способ доставки</p>
+                <a href="shopping-cart.html" class="inline-block px-8 py-3 bg-green-600 rounded-lg hover:bg-green-700 transition font-semibold">
+                    Перейти в корзину →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

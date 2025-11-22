@@ -1,0 +1,15 @@
+{
+  "name": "the-international-website",
+  "version": "1.0.0",
+  "description": "The International Tournament Website",
+  "scripts": {
+    "deploy": "firebase deploy",
+    "serve": "firebase serve"
+  },
+  "keywords": ["dota2", "tournament", "esports"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  }
+}

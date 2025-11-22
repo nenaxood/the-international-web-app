@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="profile.html" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">👤 Профиль</a>
+                    <a href="login.html" class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition font-semibold">Вход</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-indigo-900 to-purple-900 py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-black mb-4">🛒 Корзина</h1>
+            <p class="text-xl text-gray-200">Ваши выбранные товары</p>
+        </div>
+    </div>
+
+    <section class="py-16 bg-gray-900 min-h-screen">
+        <div class="container mx-auto px-6">
+            <div id="cart-items" class="space-y-4 mb-8">
+                <!-- Здесь будут отображаться товары из корзины -->
+            </div>
+
+            <div id="cart-empty" class="text-center py-8 hidden">
+                <p class="text-xl text-gray-400">Ваша корзина пуста</p>
+                <a href="merch.html" class="inline-block mt-4 px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition">
+                    Перейти к покупкам
+                </a>
+            </div>
+
+            <div id="cart-summary" class="bg-gray-800 p-6 rounded-xl mt-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Итого:</h3>
+                    <p class="text-2xl font-bold text-green-400">$<span id="total-price">0</span></p>
+                </div>
+                <button id="checkout-button" class="w-full bg-green-600 py-3 rounded-lg hover:bg-green-700 transition font-semibold">
+                    Оформить заказ
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8 mt-16">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <template id="cart-item-template">
+        <div class="cart-item bg-gray-800 p-4 rounded-xl flex items-center gap-4">
+            <div class="bg-gray-700 h-24 w-24 rounded-lg flex items-center justify-center text-4xl flex-shrink-0">
+                <!-- Emoji товара будет добавлен через JavaScript -->
+            </div>
+            <div class="flex-grow">
+                <h3 class="font-bold text-lg"></h3>
+                <p class="text-gray-400"></p>
+                <p class="text-green-400 font-bold mt-1">$<span class="item-price"></span></p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="decrease-quantity px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 transition">-</button>
+                <span class="quantity-display px-4">1</span>
+                <button class="increase-quantity px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 transition">+</button>
+                <button class="remove-item ml-4 px-3 py-1 bg-red-600 rounded hover:bg-red-700 transition">×</button>
+            </div>
+        </div>
+    </template>
+
+    <script type="module">
+        import { onAuthChange } from './auth.js';
+        import { saveOrder } from './database.js';
+
+        console.log('[Cart] Загрузка страницы корзины...');
+
+        // Класс для управления корзиной
+        class Cart {
+            constructor() {
+                this.items = this.loadFromStorage();
+                this.template = document.getElementById('cart-item-template');
+                this.container = document.getElementById('cart-items');
+                this.emptyMessage = document.getElementById('cart-empty');
+                this.summary = document.getElementById('cart-summary');
+                this.totalPrice = document.getElementById('total-price');
+                this.checkoutButton = document.getElementById('checkout-button');
+                this.currentUser = null;
+                
+                // Проверить авторизацию
+                onAuthChange((user) => {
+                    this.currentUser = user;
+                    if (!user) {
+                        console.log('[Cart] Пользователь не авторизован');
+                        this.checkoutButton.textContent = '⬆️ Войдите для оформления заказа';
+                        this.checkoutButton.disabled = true;
+                        this.checkoutButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        console.log('[Cart] Пользователь авторизован');
+                        this.checkoutButton.textContent = 'Оформить заказ';
+                        this.checkoutButton.disabled = false;
+                        this.checkoutButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+                
+                this.render();
+                this.setupEventListeners();
+            }
+
+            loadFromStorage() {
+                const stored = localStorage.getItem('cart');
+                const items = stored ? JSON.parse(stored) : [];
+                console.log('[Cart] Загружено товаров:', items.length);
+                return items;
+            }
+
+            saveToStorage() {
+                localStorage.setItem('cart', JSON.stringify(this.items));
+            }
+
+            addItem(item) {
+                const existingItem = this.items.find(i => i.id === item.id);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    this.items.push({ ...item, quantity: 1 });
+                }
+                this.saveToStorage();
+                this.render();
+            }
+
+            removeItem(itemId) {
+                this.items = this.items.filter(item => item.id !== itemId);
+                this.saveToStorage();
+                this.render();
+            }
+
+            updateQuantity(itemId, delta) {
+                const item = this.items.find(i => i.id === itemId);
+                if (item) {
+                    item.quantity = Math.max(1, item.quantity + delta);
+                    this.saveToStorage();
+                    this.render();
+                }
+            }
+
+            calculateTotal() {
+                return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            }
+
+            setupEventListeners() {
+                this.container.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('decrease-quantity')) {
+                        const itemId = e.target.closest('.cart-item').dataset.id;
+                        this.updateQuantity(itemId, -1);
+                    } else if (e.target.classList.contains('increase-quantity')) {
+                        const itemId = e.target.closest('.cart-item').dataset.id;
+                        this.updateQuantity(itemId, 1);
+                    } else if (e.target.classList.contains('remove-item')) {
+                        const itemId = e.target.closest('.cart-item').dataset.id;
+                        this.removeItem(itemId);
+                    }
+                });
+
+                this.checkoutButton.addEventListener('click', async () => {
+                    console.log('[Cart] Оформление заказа');
+                    
+                    if (!this.currentUser) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    if (this.items.length === 0) {
+                        alert('Корзина пуста');
+                        return;
+                    }
+
+                    try {
+                        this.checkoutButton.disabled = true;
+                        this.checkoutButton.textContent = 'Обработка...';
+
+                        const result = await saveOrder(this.currentUser.uid, {
+                            items: this.items,
+                            total: this.calculateTotal(),
+                            status: 'pending',
+                            createdAt: new Date().toISOString()
+                        });
+
+                        if (result.success) {
+                            console.log('[Cart] ✅ Заказ успешен:', result.orderId);
+                            alert('✅ Заказ #' + result.orderId + ' оформлен!\nСумма: $' + this.calculateTotal().toFixed(2));
+                            this.items = [];
+                            this.saveToStorage();
+                            this.render();
+                            setTimeout(() => {
+                                window.location.href = 'profile.html';
+                            }, 1500);
+                        } else {
+                            alert('❌ Ошибка: ' + result.error);
+                            this.checkoutButton.disabled = false;
+                            this.checkoutButton.textContent = 'Оформить заказ';
+                        }
+                    } catch (error) {
+                        console.error('[Cart] Ошибка:', error);
+                        alert('❌ Ошибка: ' + error.message);
+                        this.checkoutButton.disabled = false;
+                        this.checkoutButton.textContent = 'Оформить заказ';
+                    }
+                });
+            }
+
+            render() {
+                this.container.innerHTML = '';
+                
+                if (this.items.length === 0) {
+                    this.emptyMessage.classList.remove('hidden');
+                    this.summary.classList.add('hidden');
+                    return;
+                }
+
+                this.emptyMessage.classList.add('hidden');
+                this.summary.classList.remove('hidden');
+
+                this.items.forEach(item => {
+                    const element = this.template.content.cloneNode(true);
+                    const cartItem = element.querySelector('.cart-item');
+                    
+                    cartItem.dataset.id = item.id;
+                    const emojiContainer = cartItem.querySelector('.bg-gray-700');
+                    if (emojiContainer) emojiContainer.innerHTML = item.emoji;
+                    
+                    const nameEl = cartItem.querySelector('h3');
+                    if (nameEl) nameEl.textContent = item.name;
+                    
+                    const descEl = cartItem.querySelector('p');
+                    if (descEl) descEl.textContent = item.description;
+                    
+                    const priceEl = cartItem.querySelector('.item-price');
+                    if (priceEl) priceEl.textContent = item.price.toFixed(2);
+                    
+                    const quantityEl = cartItem.querySelector('.quantity-display');
+                    if (quantityEl) quantityEl.textContent = item.quantity;
+
+                    this.container.appendChild(element);
+                });
+
+                this.totalPrice.textContent = this.calculateTotal().toFixed(2);
+            }
+        }
+
+        const cart = new Cart();
+        console.log('[Cart] ✅ Инициализирована');
+    </script>
+            }
+
+            // Отрисовка корзины
+            render() {
+                this.container.innerHTML = '';
+                
+                if (this.items.length === 0) {
+                    this.emptyMessage.classList.remove('hidden');
+                    this.summary.classList.add('hidden');
+                    return;
+                }
+
+                this.emptyMessage.classList.add('hidden');
+                this.summary.classList.remove('hidden');
+
+                this.items.forEach(item => {
+                    const element = this.template.content.cloneNode(true);
+                    const cartItem = element.querySelector('.cart-item');
+                    
+                    cartItem.dataset.id = item.id;
+                    const emojiContainer = cartItem.querySelector('.bg-gray-700');
+                    if (emojiContainer) emojiContainer.innerHTML = item.emoji;
+                    
+                    const nameEl = cartItem.querySelector('h3');
+                    if (nameEl) nameEl.textContent = item.name;
+                    
+                    const descEl = cartItem.querySelector('p');
+                    if (descEl) descEl.textContent = item.description;
+                    
+                    const priceEl = cartItem.querySelector('.item-price');
+                    if (priceEl) priceEl.textContent = item.price;
+                    
+                    const quantityEl = cartItem.querySelector('.quantity-display');
+                    if (quantityEl) quantityEl.textContent = item.quantity;
+
+                    this.container.appendChild(element);
+                });
+
+                this.totalPrice.textContent = this.calculateTotal();
+            }
+        }
+
+        // Инициализация корзины при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = new Cart();
+        });
+    </script>
+</body>
+</html>

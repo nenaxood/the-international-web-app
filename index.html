@@ -1,0 +1,141 @@
+<!-- INDEX.HTML - Главная страница -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>The International - Главная</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-purple-400 font-semibold hover:text-purple-300 transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход / регистрация</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-gradient py-24">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-6xl font-black mb-6 animate-pulse">The International 2025</h1>
+            <p class="text-2xl mb-8 text-gray-100">Крупнейший турнир по Dota 2 в мире</p>
+            <p class="text-xl mb-12 max-w-3xl mx-auto text-gray-200">
+                Наблюдайте за лучшими командами планеты, борющимися за призовой фонд в миллионы долларов и звание чемпионов мира
+            </p>
+            <div class="flex justify-center space-x-6">
+                <a href="tickets.html" class="px-8 py-4 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 transition shadow-xl">
+                    Купить билеты
+                </a>
+                <a href="calendar.html" class="px-8 py-4 bg-white text-purple-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-xl">
+                    Расписание
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <a href="tickets.html" class="card-hover bg-green-600 p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-3">🎫 Билеты</h3>
+                    <p class="text-gray-100">Список событий и покупка билетов</p>
+                </a>
+                <a href="merch.html" class="card-hover bg-green-700 p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-3">🛍️ Мерч</h3>
+                    <p class="text-gray-100">Официальная продукция турнира</p>
+                </a>
+                <a href="video.html" class="card-hover bg-green-600 p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-3">📹 Видео</h3>
+                    <p class="text-gray-100">Фавориты, категории и поиск видео</p>
+                </a>
+                <a href="calendar.html" class="card-hover bg-green-700 p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-3">📅 Календарь</h3>
+                    <p class="text-gray-100">Билеты и предстоящие события</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-12 mt-16">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4 text-purple-400">The International</h4>
+                    <p class="text-gray-400">Официальный сайт крупнейшего турнира по Dota 2</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Навигация</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="about.html" class="hover:text-white transition">О турнире</a></li>
+                        <li><a href="tickets.html" class="hover:text-white transition">Билеты</a></li>
+                        <li><a href="video.html" class="hover:text-white transition">Видео</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 The International. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { onAuthChange } from './auth.js';
+        import { isAdmin } from './admin.js';
+
+        // Обновить навигацию на основе статуса авторизации
+        onAuthChange(async (user) => {
+            const loginBtn = document.querySelector('a[href="login.html"]');
+            
+            if (user) {
+                // Пользователь авторизован
+                const admin = await isAdmin(user.uid);
+                
+                loginBtn.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span>${user.displayName || user.email.split('@')[0]}</span>
+                        <a href="${admin ? 'admin.html' : 'profile.html'}" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700 transition text-sm">
+                            ${admin ? '👑 Админ' : '👤 Профиль'}
+                        </a>
+                    </div>
+                `;
+            } else {
+                // Пользователь не авторизован
+                loginBtn.innerHTML = 'Вход / регистрация';
+                loginBtn.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

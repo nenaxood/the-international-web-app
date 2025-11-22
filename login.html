@@ -1,0 +1,174 @@
+<!-- ===================================== -->
+<!-- LOGIN.HTML - Вход/Регистрация -->
+<!-- ===================================== -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .error-message {
+            animation: slideIn 0.3s ease-out;
+        }
+        .success-message {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="py-16 bg-gray-900 min-h-screen flex items-center">
+        <div class="container mx-auto px-6">
+            <div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-2xl">
+                <h1 class="text-3xl font-black mb-6 text-center text-purple-400">Вход</h1>
+                
+                <!-- Сообщения об ошибках и успехе -->
+                <div id="error-message" class="hidden mb-4 p-3 bg-red-900 border border-red-700 rounded-lg text-red-200 error-message"></div>
+                <div id="success-message" class="hidden mb-4 p-3 bg-green-900 border border-green-700 rounded-lg text-green-200 success-message"></div>
+                
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <input 
+                            type="email" 
+                            id="login-email"
+                            placeholder="Email" 
+                            class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <input 
+                            type="password" 
+                            id="login-password"
+                            placeholder="Пароль" 
+                            class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required
+                        >
+                    </div>
+                    
+                    <button 
+                        type="submit"
+                        class="w-full bg-purple-600 px-6 py-3 rounded-lg hover:bg-purple-700 transition font-semibold"
+                        data-original-text="Войти"
+                    >
+                        Войти
+                    </button>
+                </form>
+
+                <div class="text-center text-gray-400 my-4">или</div>
+
+                <button class="w-full bg-blue-600 px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
+                    Войти через Steam
+                </button>
+
+                <div class="text-center mt-6">
+                    <span class="text-gray-400">Нет аккаунта? </span>
+                    <a href="register.html" class="text-purple-400 hover:text-purple-300">Зарегистрироваться</a>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="forgot-password.html" class="text-gray-400 hover:text-white text-sm">Забыли пароль?</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        console.log('Загрузка модулей входа...');
+        
+        try {
+            const { loginUser, onAuthChange } = await import('./auth.js');
+            const { showError, showSuccess, setLoading, updateNavigation } = await import('./ui-helper.js');
+
+            console.log('Модули загружены успешно');
+
+            // Проверить, авторизован ли пользователь
+            onAuthChange((user) => {
+                if (user) {
+                    console.log('Пользователь авторизован:', user.email);
+                    // Если пользователь авторизован, перенаправить на главную
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 500);
+                }
+                updateNavigation(user);
+            });
+
+            // Обработчик формы входа
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                
+                console.log('Попытка входа для:', email);
+                setLoading(submitBtn, true);
+                
+                try {
+                    const result = await loginUser(email, password);
+                    
+                    if (result.success) {
+                        console.log('Вход успешен!');
+                        showSuccess('Успешный вход! Перенаправление...');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } else {
+                        console.error('Ошибка входа:', result.error);
+                        showError(result.error);
+                        setLoading(submitBtn, false);
+                    }
+                } catch (error) {
+                    console.error('Ошибка при входе:', error);
+                    showError('Произошла ошибка: ' + error.message);
+                    setLoading(submitBtn, false);
+                }
+            });
+        } catch (error) {
+            console.error('Ошибка загрузки модулей:', error);
+            alert('Ошибка загрузки страницы: ' + error.message);
+        }
+    </script>
+</body>
+</html>

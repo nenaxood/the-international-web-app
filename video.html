@@ -1,0 +1,143 @@
+<!-- ===================================== -->
+<!-- VIDEO.HTML - Страница Видео -->
+<!-- ===================================== -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Видео - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-purple-400 font-semibold hover:text-purple-300 transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-red-900 to-pink-900 py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-black mb-4">📹 Видео The International</h1>
+            <p class="text-xl text-gray-200">Лучшие моменты, интервью и повторы матчей</p>
+        </div>
+    </div>
+
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="bg-gray-800 p-6 rounded-xl mb-12">
+                <h3 class="text-2xl font-bold mb-4">🔍 Поиск видео</h3>
+                <input type="text" placeholder="Найти видео..." class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white">
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <a href="video-favorites.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition">
+                    <h3 class="text-2xl font-bold mb-3">⭐ Фавориты</h3>
+                    <p class="text-gray-100">Самые популярные видео</p>
+                </a>
+                <a href="video-categories.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition">
+                    <h3 class="text-2xl font-bold mb-3">📂 Категории</h3>
+                    <p class="text-gray-100">Видео по категориям</p>
+                </a>
+                <a href="video-search.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition">
+                    <h3 class="text-2xl font-bold mb-3">🔎 Поиск видео</h3>
+                    <p class="text-gray-100">Расширенный поиск</p>
+                </a>
+            </div>
+
+            <h2 class="text-4xl font-bold mb-8 text-purple-400">Рекомендованные видео</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <div class="bg-gray-700 h-48 flex items-center justify-center">
+                        <span class="text-6xl">▶️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Лучшие моменты TI 2024</h3>
+                        <p class="text-gray-400 mb-4">Самые яркие игры турнира</p>
+                        <span class="text-sm text-gray-500">👁️ 2.5M просмотров</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <div class="bg-gray-700 h-48 flex items-center justify-center">
+                        <span class="text-6xl">▶️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Гранд-финал TI 2024</h3>
+                        <p class="text-gray-400 mb-4">Полная запись финальной игры</p>
+                        <span class="text-sm text-gray-500">👁️ 5.1M просмотров</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <div class="bg-gray-700 h-48 flex items-center justify-center">
+                        <span class="text-6xl">▶️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Интервью с чемпионами</h3>
+                        <p class="text-gray-400 mb-4">Эксклюзивные интервью</p>
+                        <span class="text-sm text-gray-500">👁️ 890K просмотров</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <div class="bg-gray-700 h-48 flex items-center justify-center">
+                        <span class="text-6xl">▶️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Анализ мета TI 2025</h3>
+                        <p class="text-gray-400 mb-4">Разбор популярных стратегий</p>
+                        <span class="text-sm text-gray-500">👁️ 1.2M просмотров</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <div class="bg-gray-700 h-48 flex items-center justify-center">
+                        <span class="text-6xl">▶️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">За кадром TI</h3>
+                        <p class="text-gray-400 mb-4">Закулисье турнира</p>
+                        <span class="text-sm text-gray-500">👁️ 650K просмотров</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <div class="bg-gray-700 h-48 flex items-center justify-center">
+                        <span class="text-6xl">▶️</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Топ 10 игр TI</h3>
+                        <p class="text-gray-400 mb-4">Самые захватывающие матчи</p>
+                        <span class="text-sm text-gray-500">👁️ 3.8M просмотров</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

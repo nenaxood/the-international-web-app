@@ -1,0 +1,146 @@
+<!-- ===================================== -->
+<!-- CALENDAR.HTML - Календарь -->
+<!-- ===================================== -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календарь - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-purple-400 font-semibold hover:text-purple-300 transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-blue-900 to-cyan-900 py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-black mb-4">📅 Календарь событий</h1>
+            <p class="text-xl text-gray-200">Расписание всех матчей и мероприятий</p>
+        </div>
+    </div>
+
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <a href="tickets.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition">
+                    <h3 class="text-2xl font-bold mb-3">🎫 Билеты</h3>
+                    <p class="text-gray-100">Купить билеты на события</p>
+                </a>
+                <a href="upcoming.html" class="bg-green-700 p-8 rounded-xl hover:bg-green-600 transition">
+                    <h3 class="text-2xl font-bold mb-3">📋 Просмотреть предстоящие события</h3>
+                    <p class="text-gray-100">Все будущие матчи и события</p>
+                </a>
+            </div>
+
+            <div class="bg-gray-800 p-8 rounded-xl mb-8">
+                <h2 class="text-3xl font-bold mb-6 text-purple-400">Октябрь 2025</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-700 p-6 rounded-lg border-l-4 border-green-500">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Групповой этап - День 1</h3>
+                            <span class="bg-green-600 px-3 py-1 rounded text-sm">Скоро</span>
+                        </div>
+                        <p class="text-gray-300 mb-2">📅 15 октября 2025, 10:00 - 20:00</p>
+                        <p class="text-gray-400">Начало группового этапа. 16 команд разделены на две группы</p>
+                    </div>
+
+                    <div class="bg-gray-700 p-6 rounded-lg border-l-4 border-green-500">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Групповой этап - День 2</h3>
+                            <span class="bg-green-600 px-3 py-1 rounded text-sm">Скоро</span>
+                        </div>
+                        <p class="text-gray-300 mb-2">📅 16 октября 2025, 10:00 - 20:00</p>
+                        <p class="text-gray-400">Продолжение группового этапа</p>
+                    </div>
+
+                    <div class="bg-gray-700 p-6 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Плей-офф - Четвертьфиналы</h3>
+                            <span class="bg-yellow-600 px-3 py-1 rounded text-sm">Важное</span>
+                        </div>
+                        <p class="text-gray-300 mb-2">📅 19 октября 2025, 12:00 - 22:00</p>
+                        <p class="text-gray-400">Начало плей-офф. Лучшие 8 команд</p>
+                    </div>
+
+                    <div class="bg-gray-700 p-6 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Плей-офф - Полуфиналы</h3>
+                            <span class="bg-yellow-600 px-3 py-1 rounded text-sm">Важное</span>
+                        </div>
+                        <p class="text-gray-300 mb-2">📅 20 октября 2025, 12:00 - 22:00</p>
+                        <p class="text-gray-400">Полуфинальные матчи</p>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-orange-600 to-red-600 p-6 rounded-lg border-l-4 border-red-700">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">🏆 ГРАНД-ФИНАЛ</h3>
+                            <span class="bg-red-700 px-3 py-1 rounded text-sm font-bold">ФИНАЛ</span>
+                        </div>
+                        <p class="text-white mb-2">📅 22 октября 2025, 14:00 - 23:00</p>
+                        <p class="text-gray-100 font-semibold">Главное событие турнира! Определение чемпиона мира!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 p-8 rounded-xl">
+                <h3 class="text-2xl font-bold mb-4 text-purple-400">ℹ️ Дополнительные мероприятия</h3>
+                <ul class="space-y-3 text-gray-300">
+                    <li class="flex items-start">
+                        <span class="text-purple-400 mr-3 mt-1">•</span>
+                        <div>
+                            <strong>Автограф-сессии</strong> - Ежедневно после матчей
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-purple-400 mr-3 mt-1">•</span>
+                        <div>
+                            <strong>Встречи с разработчиками</strong> - 18 октября, 16:00
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-purple-400 mr-3 mt-1">•</span>
+                        <div>
+                            <strong>Косплей-конкурс</strong> - 21 октября, 15:00
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-purple-400 mr-3 mt-1">•</span>
+                        <div>
+                            <strong>Церемония закрытия</strong> - 22 октября, после финала
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

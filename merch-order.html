@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предзаказ мерча - The International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black text-purple-400">TI</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition">Главная</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white transition">О турнире</a>
+                        <a href="tickets.html" class="text-gray-300 hover:text-white transition">Билеты</a>
+                        <a href="merch.html" class="text-gray-300 hover:text-white transition">Мерч</a>
+                        <a href="video.html" class="text-gray-300 hover:text-white transition">Видео</a>
+                        <a href="calendar.html" class="text-gray-300 hover:text-white transition">Календарь</a>
+                        <a href="contacts.html" class="text-gray-300 hover:text-white transition">Контакты</a>
+                    </div>
+                </div>
+                <a href="login.html" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition font-semibold">Вход</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-indigo-900 to-purple-900 py-16">
+        <div class="container mx-auto px-6">
+            <h1 class="text-5xl font-black mb-4">📦 Предзаказ мерча</h1>
+            <p class="text-xl text-gray-200">Эксклюзивные товары, доступные для предварительного заказа</p>
+        </div>
+    </div>
+
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="bg-gray-800 p-8 rounded-xl mb-12">
+                <h2 class="text-3xl font-bold mb-6 text-purple-400">Как работает предзаказ?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-3">1. Выберите товары</h3>
+                        <p class="text-gray-300">Просмотрите каталог эксклюзивных товаров и выберите то, что вам нравится</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-3">2. Оформите предзаказ</h3>
+                        <p class="text-gray-300">Внесите предоплату и зарезервируйте товары для себя</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-3">3. Получите первыми</h3>
+                        <p class="text-gray-300">Получите свои товары сразу после их поступления в продажу</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-4xl font-bold mb-8 text-center text-purple-400">Доступно для предзаказа</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <div class="bg-gray-700 h-48 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-6xl">🧥</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Худи The International 2025</h3>
+                    <p class="text-gray-400 mb-4">Лимитированная серия</p>
+                    <p class="text-green-400 font-bold text-xl mb-4">$75</p>
+                    <button class="w-full bg-green-600 py-2 rounded hover:bg-green-700 transition">Предзаказ</button>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <div class="bg-gray-700 h-48 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-6xl">🎮</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Коллекционный геймпад</h3>
+                    <p class="text-gray-400 mb-4">Эксклюзивный дизайн</p>
+                    <p class="text-green-400 font-bold text-xl mb-4">$120</p>
+                    <button class="w-full bg-green-600 py-2 rounded hover:bg-green-700 transition">Предзаказ</button>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <div class="bg-gray-700 h-48 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-6xl">📱</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Чехол для телефона</h3>
+                    <p class="text-gray-400 mb-4">Лимитированная коллекция</p>
+                    <p class="text-green-400 font-bold text-xl mb-4">$30</p>
+                    <button class="w-full bg-green-600 py-2 rounded hover:bg-green-700 transition">Предзаказ</button>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 p-8 rounded-xl mt-12">
+                <h3 class="text-2xl font-bold mb-4 text-green-400">❓ Часто задаваемые вопросы</h3>
+                <div class="space-y-4">
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h4 class="font-bold mb-2">Когда я получу свой заказ?</h4>
+                        <p class="text-gray-300">Все предзаказы будут доставлены за неделю до начала турнира.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h4 class="font-bold mb-2">Можно ли отменить предзаказ?</h4>
+                        <p class="text-gray-300">Да, предзаказ можно отменить и получить полный возврат средств за 30 дней до даты доставки.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h4 class="font-bold mb-2">Какая гарантия на товары?</h4>
+                        <p class="text-gray-300">Все товары имеют стандартную гарантию 6 месяцев с момента получения.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 The International. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>
